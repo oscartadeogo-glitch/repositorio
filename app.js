@@ -31,7 +31,6 @@ async function guardar() {
   const nombre   = document.getElementById("nombre").value.trim();
   const edad     = document.getElementById("edad").value.trim();
   const telefono = document.getElementById("telefono").value.trim();
-  const msg      = document.getElementById("mensaje");
   const btn      = document.getElementById("btnGuardar");
 
   if (!nombre || !edad || !telefono) {
@@ -78,26 +77,30 @@ async function cargarDatos() {
   const cargando = document.getElementById("cargando");
   const tabla    = document.getElementById("tabla");
   const tbody    = document.getElementById("tbody");
+  const empty    = document.getElementById("empty");
+  const conteo   = document.getElementById("conteo");
 
   cargando.style.display = "block";
   tabla.style.display = "none";
+  empty.style.display = "none";
 
   try {
     const { datos } = await obtenerArchivo();
     tbody.innerHTML = "";
+    cargando.style.display = "none";
+    conteo.textContent = datos.length;
 
     if (datos.length === 0) {
-      cargando.textContent = "No hay registros aún.";
+      empty.style.display = "block";
       return;
     }
 
     datos.forEach((r, i) => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${i + 1}</td><td>${r.nombre}</td><td>${r.edad}</td><td>${r.telefono}</td>`;
+      tr.innerHTML = `<td class="num-cell">${i + 1}</td><td>${r.nombre}</td><td>${r.edad}</td><td>${r.telefono}</td>`;
       tbody.appendChild(tr);
     });
 
-    cargando.style.display = "none";
     tabla.style.display = "table";
 
   } catch (e) {

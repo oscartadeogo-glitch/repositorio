@@ -3,104 +3,280 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Formulario de Registro</title>
+  <title>Registro de Personas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f2f5;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 16px;
-      min-height: 100vh;
     }
-    h1 { margin-bottom: 24px; color: #333; }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+      color: white;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    header p {
+      margin-top: 6px;
+      font-size: 15px;
+      opacity: 0.85;
+    }
+
+    /* Card */
     .card {
       background: white;
-      border-radius: 12px;
-      padding: 32px;
+      border-radius: 20px;
+      padding: 36px;
       width: 100%;
       max-width: 480px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      margin-bottom: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      margin-bottom: 32px;
     }
-    label { display: block; margin-bottom: 6px; font-weight: 600; color: #555; font-size: 14px; }
-    input {
+
+    .card h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 4px;
+    }
+
+    /* Input group */
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .input-group .icon {
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      font-size: 16px;
+      pointer-events: none;
+    }
+    .input-group input {
       width: 100%;
-      padding: 10px 14px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      padding: 12px 14px 12px 40px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
       font-size: 15px;
-      margin-bottom: 18px;
-      transition: border 0.2s;
+      font-family: 'Inter', sans-serif;
+      color: #1a1a2e;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fafafa;
     }
-    input:focus { outline: none; border-color: #4f8ef7; }
-    button {
+    .input-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(102,126,234,0.12);
+    }
+    .input-group input::placeholder { color: #bbb; }
+
+    /* Button */
+    .btn {
       width: 100%;
-      padding: 12px;
-      background: #4f8ef7;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 16px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: opacity 0.2s, transform 0.1s;
+      margin-top: 4px;
     }
-    button:hover { background: #3a7ae0; }
-    button:disabled { background: #aaa; cursor: not-allowed; }
+    .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Mensaje */
     #mensaje {
       margin-top: 14px;
-      font-size: 14px;
+      font-size: 13px;
       text-align: center;
-      min-height: 20px;
+      min-height: 18px;
+      font-weight: 500;
+      border-radius: 8px;
+      padding: 0;
+      transition: all 0.3s;
     }
-    .ok { color: #2e7d32; }
-    .err { color: #c62828; }
+    #mensaje.ok {
+      color: #1b7a3e;
+      background: #e8f5e9;
+      padding: 10px;
+    }
+    #mensaje.err {
+      color: #b71c1c;
+      background: #ffebee;
+      padding: 10px;
+    }
 
-    /* Tabla */
+    /* Tabla card */
     .tabla-card {
       background: white;
-      border-radius: 12px;
-      padding: 24px;
+      border-radius: 20px;
+      padding: 28px;
       width: 100%;
-      max-width: 700px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      max-width: 720px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
     }
-    .tabla-card h2 { margin-bottom: 16px; color: #333; }
+    .tabla-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .tabla-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tabla-header h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 4px;
+    }
+    .badge {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th { background: #4f8ef7; color: white; padding: 10px 14px; text-align: left; }
-    td { padding: 10px 14px; border-bottom: 1px solid #eee; }
+    thead tr { background: #f5f6fa; }
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    td { padding: 14px 16px; border-bottom: 1px solid #f0f0f0; color: #333; }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #f7f9ff; }
-    #cargando { color: #888; font-size: 14px; }
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover td { background: #f8f7ff; }
+
+    .num-cell {
+      width: 40px;
+      color: #bbb;
+      font-weight: 600;
+    }
+
+    #cargando {
+      text-align: center;
+      color: #aaa;
+      font-size: 14px;
+      padding: 24px 0;
+    }
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #ddd;
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px 0;
+      color: #bbb;
+      font-size: 14px;
+    }
+    .empty-state .emoji { font-size: 36px; display: block; margin-bottom: 8px; }
   </style>
 </head>
 <body>
 
-  <h1>Registro de Personas</h1>
+  <header>
+    <h1>📋 Registro de Personas</h1>
+    <p>Los datos se guardan directamente en GitHub</p>
+  </header>
 
   <div class="card">
-    <label for="nombre">Nombre</label>
-    <input type="text" id="nombre" placeholder="Ej: Juan Pérez" />
+    <h2>Nuevo Registro</h2>
 
-    <label for="edad">Edad</label>
-    <input type="number" id="edad" placeholder="Ej: 25" min="1" max="120" />
+    <div class="input-group">
+      <label for="nombre">Nombre</label>
+      <span class="icon">👤</span>
+      <input type="text" id="nombre" placeholder="Ej: Juan Pérez" autocomplete="off"/>
+    </div>
 
-    <label for="telefono">Teléfono</label>
-    <input type="tel" id="telefono" placeholder="Ej: 555-1234" />
+    <div class="input-group">
+      <label for="edad">Edad</label>
+      <span class="icon">🎂</span>
+      <input type="number" id="edad" placeholder="Ej: 25" min="1" max="120"/>
+    </div>
 
-    <button id="btnGuardar" onclick="guardar()">Guardar</button>
+    <div class="input-group">
+      <label for="telefono">Teléfono</label>
+      <span class="icon">📞</span>
+      <input type="tel" id="telefono" placeholder="Ej: 555-1234"/>
+    </div>
+
+    <button class="btn" id="btnGuardar" onclick="guardar()">Guardar Registro</button>
     <div id="mensaje"></div>
   </div>
 
   <div class="tabla-card">
-    <h2>Lista de Registros</h2>
-    <div id="cargando">Cargando datos...</div>
+    <div class="tabla-header">
+      <h2>Lista de Registros</h2>
+      <span class="badge" id="conteo">0</span>
+    </div>
+    <div id="cargando"><span class="spinner"></span> Cargando datos...</div>
     <table id="tabla" style="display:none">
       <thead>
         <tr>
-          <th>#</th>
+          <th class="num-cell">#</th>
           <th>Nombre</th>
           <th>Edad</th>
           <th>Teléfono</th>
@@ -108,6 +284,10 @@
       </thead>
       <tbody id="tbody"></tbody>
     </table>
+    <div id="empty" class="empty-state" style="display:none">
+      <span class="emoji">🗂️</span>
+      No hay registros aún
+    </div>
   </div>
 
   <script src="config.js"></script>
